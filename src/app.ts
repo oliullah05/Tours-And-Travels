@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express"
 export  const app:Application = express()
 import cors from "cors"
+import { userRoutes } from "./routes/user.route"
 
 // parsers
 app.use(express.json())
@@ -8,8 +9,9 @@ app.use(cors())
 
 
 //middlewars
-const userRoute = express.Router()
 
+
+app.use("/api/v1/users",userRoutes)
 
 app.get('/', (req:Request, res:Response) => {
   res.status(200).json({
@@ -18,17 +20,5 @@ app.get('/', (req:Request, res:Response) => {
   })
 })
 
-app.use("/api/v1/users",userRoute)
-userRoute.get("/all-user",(req,res)=>{
-  const users = [
-    {id:1,
-    name:"laskdjs"},
-    {id:1,
-    name:"laskdjs"}
-  ]
-  res.status(200).json({
-    success:true,
-    data:users
-  })
-})
+
 export default app;
