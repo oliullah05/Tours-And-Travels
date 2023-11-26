@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { Document, Query, Schema, model } from 'mongoose';
 import { IUser } from '../interfaces/user.interface';
 
 const userSchema = new Schema<IUser>({
@@ -23,7 +23,35 @@ const userSchema = new Schema<IUser>({
       }
   );
 
+
+
+  //for all find middleware user this /^find/ regular expretion
   
+  userSchema.pre(/^find/,function(this:Query<IUser,Document>,next){
+    this.find({userStatus:{$eq:"active"}})
+    next()
+  })
+
+
+
+
+  
+//   userSchema.pre("findOne",function(next){
+//     this.find({userStatus:{$eq:"active"}})
+//     next()
+//   })
+
+
+
+
+
+
+
+
+
+
+
+
 const UserModel = model<IUser>("User",userSchema)
 
 export { UserModel };
