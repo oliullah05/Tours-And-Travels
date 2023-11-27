@@ -1,8 +1,8 @@
-import { Schema, model } from "mongoose";
-import { ITour } from "../interfaces/tour.interface";
+import {Schema, model } from "mongoose";
+import { ITour, ITourMethods, ITourModel } from "../interfaces/tour.interface";
 import slugify from "slugify"
 
-const tourSchema = new Schema<ITour>({
+const tourSchema = new Schema<ITour,ITourModel,ITourMethods>({
   name: { type: String, required: [true, 'Name is required.'], trim: true },
   durationHours: { type: Number, required: [true, 'Duration is required.'] },
   ratingAverage: { type: Number, required: [true, 'Rating average is required.'] },
@@ -37,4 +37,31 @@ this.slug=slugify(this.name,{
 next()
 })
 
-export const TourModel = model<ITour>('Tour', tourSchema);
+
+
+tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
+  nearestStartDate: Date | null
+  estimatedEndDate: Date | null
+} {
+  const today = new Date()
+  const futureDates = this.startDates.filter((startDate: Date) => {
+      return startDate > today
+  })
+  //   65893905746394 - 4873843278478478
+
+  futureDates.sort((a: Date, b:Date) => a.getTime() - b.getTime())
+
+  const nearestStartDate = futureDates[0]
+  const estimatedEndDate = new Date(
+      nearestStartDate.getTime() + this.durationHours * 60 * 60 * 1000,
+  )
+
+  return {
+      nearestStartDate,
+      estimatedEndDate,
+  }
+}
+
+
+
+export const TourModel = model<ITour,ITourModel>('Tour', tourSchema);

@@ -79,6 +79,27 @@ const deleteTour =async(req:Request,res:Response)=>{
         })
     }
     }
+
+
+// const getNextSchedule =async(req:Request,res:Response)=>{
+//     try{
+//         const tourId = req.params.id;
+//     const result =    await tourServices.getNextSchedule(tourId)
+//     res.status(200).json({
+//         status:"success",
+//         message:"nearest schedule fatched successfully",
+//         data:result
+//     })
+//     }
+    
+//     catch(error:any){
+//         res.status(500).json({
+//             status:"fail",
+//             message:error.message || "tour delete unsuccessful"
+//         })
+//     }
+//     }
+
     
 const updateTour =async(req:Request,res:Response)=>{
     try{
@@ -107,4 +128,6 @@ export const  tourController = {
     getSingleTour,
     deleteTour,
     updateTour,
-    getAllTour}
+  
+    getAllTour
+}

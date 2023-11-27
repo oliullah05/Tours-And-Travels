@@ -12,4 +12,5 @@ tourRoutes.delete("/:id",tourController.deleteTour)
 
 
 
+
 export {tourRoutes}
