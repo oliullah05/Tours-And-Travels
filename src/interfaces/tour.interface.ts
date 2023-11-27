@@ -10,6 +10,6 @@ interface ITour {
     startDates: Date[];
     startLocation: string;
     locations: string[];
-    slug: string;
+    slug?: string;
   }
   export {ITour}
