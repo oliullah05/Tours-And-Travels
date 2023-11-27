@@ -14,6 +14,18 @@ const tourSchema = new Schema<ITour>({
   startLocation: { type: String, required: [true, 'Start location is required.'] },
   locations: { type: [String], required: [true, 'Locations are required.'] },
   slug: { type: String, required: [true, 'Slug is required.'] },
+},{
+  
+  toJSON:{virtuals:true},
+  toObject:{virtuals:true}
+
+
 });
+
+
+tourSchema.virtual("durationDays").get(function(){
+return    this.durationHours/24
+})
+
 
 export const TourModel = model<ITour>('Tour', tourSchema);
