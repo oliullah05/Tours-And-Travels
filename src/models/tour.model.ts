@@ -1,8 +1,8 @@
-import {Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { ITour, ITourMethods, ITourModel } from "../interfaces/tour.interface";
 import slugify from "slugify"
 
-const tourSchema = new Schema<ITour,ITourModel,ITourMethods>({
+const tourSchema = new Schema<ITour, ITourModel, ITourMethods>({
   name: { type: String, required: [true, 'Name is required.'], trim: true },
   durationHours: { type: Number, required: [true, 'Duration is required.'] },
   ratingAverage: { type: Number, required: [true, 'Rating average is required.'] },
@@ -15,26 +15,34 @@ const tourSchema = new Schema<ITour,ITourModel,ITourMethods>({
   startLocation: { type: String, required: [true, 'Start location is required.'] },
   locations: { type: [String], required: [true, 'Locations are required.'] },
   slug: { type: String },
-},{
-  
-  toJSON:{virtuals:true},
-  toObject:{virtuals:true}
+}, {
+
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 
 
 });
 
 
-tourSchema.virtual("durationDays").get(function(){
-return    this.durationHours/24
+tourSchema.virtual("durationDays").get(function () {
+  return this.durationHours / 24
 })
 
 
-tourSchema.pre("save",function(next){
-this.slug=slugify(this.name,{
-  trim:true,
-  lower:true
+tourSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "tourId",
+  localField: "_id"
 })
-next()
+
+
+
+tourSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, {
+    trim: true,
+    lower: true
+  })
+  next()
 })
 
 
@@ -45,23 +53,23 @@ tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
 } {
   const today = new Date()
   const futureDates = this.startDates.filter((startDate: Date) => {
-      return startDate > today
+    return startDate > today
   })
   //   65893905746394 - 4873843278478478
 
-  futureDates.sort((a: Date, b:Date) => a.getTime() - b.getTime())
+  futureDates.sort((a: Date, b: Date) => a.getTime() - b.getTime())
 
   const nearestStartDate = futureDates[0]
   const estimatedEndDate = new Date(
-      nearestStartDate.getTime() + this.durationHours * 60 * 60 * 1000,
+    nearestStartDate.getTime() + this.durationHours * 60 * 60 * 1000,
   )
 
   return {
-      nearestStartDate,
-      estimatedEndDate,
+    nearestStartDate,
+    estimatedEndDate,
   }
 }
 
 
 
-export const TourModel = model<ITour,ITourModel>('Tour', tourSchema);
+export const TourModel = model<ITour, ITourModel>('Tour', tourSchema);
