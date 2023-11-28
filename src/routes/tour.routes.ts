@@ -3,14 +3,14 @@ import { tourController } from "../controllers/tour.controller";
 
 
 const tourRoutes = express.Router();
-tourRoutes.post("/create-tour",tourController.createTour)
-tourRoutes.get("/",tourController.getAllTour)
-tourRoutes.get("/:id",tourController.getSingleTour)
-tourRoutes.put("/:id",tourController.updateTour)
-tourRoutes.delete("/:id",tourController.deleteTour)
+tourRoutes.post("/create-tour", tourController.createTour)
+tourRoutes.get("/", tourController.getAllTour)
+tourRoutes.get("/:id", tourController.getSingleTour)
+tourRoutes.put("/:id", tourController.updateTour)
+tourRoutes.delete("/:id", tourController.deleteTour)
+tourRoutes.get('/:id/next-schedule', tourController.getNextSchedule)
 
 
 
 
-
-export {tourRoutes}
+export { tourRoutes }
