@@ -9,4 +9,19 @@ const reviewSchema = new Schema<IReview>({
     userId: { type: Schema.Types.ObjectId, required: [true, "User ID is required"] },
 });
 
+
+
+
+//double field unique 
+reviewSchema.index({ tourId: 1, userId: 1 }, { unique: true })
+
+
+
+
+
+
+
+
+
+
 export const ReviewModel = model<IReview>("Review", reviewSchema);
