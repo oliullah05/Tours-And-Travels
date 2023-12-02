@@ -6,7 +6,8 @@ interface ITour {
   durationHours: number
   ratingAverage: number
   ratingQuantity: number
-  price: number
+  price: number,
+  availableSeats :number,
   imageCover: string
   images: string[]
   createdAt: Date

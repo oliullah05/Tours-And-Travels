@@ -13,6 +13,10 @@ const tourSchema = new Schema<ITour, TTourModel, ITourMethods>(
       type: Number,
       required: [true, 'Please tell us your durationHours'],
     },
+    availableSeats:{
+      type:Number,
+      required: [true, 'Please tell us your availableSeats']
+    },
     ratingAverage: {
       type: Number,
       default: 4.5,
