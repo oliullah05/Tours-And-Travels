@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { tourServices } from '../services/tour.service'
 
-const createTour = async (req: Request, res: Response) => {
+const createTour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const tourData = req.body
     const result = await tourServices.createTour(tourData)
@@ -12,15 +12,11 @@ const createTour = async (req: Request, res: Response) => {
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
 
-const getAllTours = async (req: Request, res: Response) => {
+const getAllTours = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const result = await tourServices.getAllTours()
     res.status(200).json({
@@ -29,14 +25,10 @@ const getAllTours = async (req: Request, res: Response) => {
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
-const getSingleTour = async (req: Request, res: Response) => {
+const getSingleTour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id
     const result = await tourServices.getSingleTour(id)
@@ -46,14 +38,10 @@ const getSingleTour = async (req: Request, res: Response) => {
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+   next(error)
   }
 }
-const updateTour = async (req: Request, res: Response) => {
+const updateTour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const tourData = req.body
     const id = req.params.id
@@ -64,14 +52,10 @@ const updateTour = async (req: Request, res: Response) => {
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+  next(error)
   }
 }
-const getNextSchedule = async (req: Request, res: Response) => {
+const getNextSchedule = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id
     const result = await tourServices.getNextSchedule(id)
@@ -81,14 +65,10 @@ const getNextSchedule = async (req: Request, res: Response) => {
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
-const deleteTour = async (req: Request, res: Response) => {
+const deleteTour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id
     await tourServices.deleteTour(id)
@@ -97,11 +77,7 @@ const deleteTour = async (req: Request, res: Response) => {
       message: 'Tour deleted successfully',
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
 

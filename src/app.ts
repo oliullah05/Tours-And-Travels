@@ -1,9 +1,15 @@
-import express, { Application, Request, Response } from 'express'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+import express, { Application, NextFunction, Request, Response, request } from 'express'
 import { userRoutes } from './routes/user.route'
 import cors from 'cors'
 import { tourRoutes } from './routes/tour.route'
 import { reviewRoutes } from './routes/review.route'
-import notFound from './controllers/notFound.controllers'
+
+import { globalErrorHandler } from './middlewars/globalErrorHandler'
+import notFound from './middlewars/notFound'
 
 const app: Application = express()
 
@@ -47,5 +53,10 @@ app.get('/', (req: Request, res: Response) => {
 // not found route using middlewar-2
 app.use(notFound)
 
+
+
+//global error handler done
+
+app.use(globalErrorHandler)
 
 export default app
