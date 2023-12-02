@@ -1,60 +1,55 @@
-import { ITour } from "../interfaces/tour.interface";
-import { TourModel } from "../models/tour.model";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ITour } from '../interfaces/tour.interface'
+import Tour from '../models/tour.model'
 
 const createTour = async (tourData: ITour): Promise<ITour> => {
-    const result = await TourModel.create(tourData)
-    return result;
+  const result = await Tour.create(tourData)
 
-
-
-
-    //mongoose built in instance method
-    //   const result = await new TourModel (tourData)
-    //   result.save()
-
+  return result
 }
-const getAllTour = async (): Promise<ITour[]> => {
-    const result = await TourModel.find();
-    return result
+
+const getAllTours = async (): Promise<ITour[]> => {
+  const result = await Tour.find()
+  return result
 }
+
 const getSingleTour = async (id: string): Promise<ITour | null> => {
-    const result = await TourModel.findById(id).populate("reviews")
-    return result
+  const result = await Tour.findById(id).populate('reviews')
+  return result
 }
 
+const updateTour = async (
+  id: string,
+  tourData: ITour,
+): Promise<ITour | null> => {
+  const result = await Tour.findByIdAndUpdate(id, tourData, {
+    new: true,
+    runValidators: true,
+  })
 
-const updateTour = async (id: string, tourData: ITour): Promise<ITour | null> => {
-
-    const result = await TourModel.findByIdAndUpdate(id, tourData, {
-        new: true,
-        runValidators: true
-    })
-    return result
+  return result
 }
-
-
 
 const deleteTour = async (id: string): Promise<ITour | null> => {
-    const result = await TourModel.findByIdAndDelete(id)
-    return result
+  const result = await Tour.findByIdAndDelete(id)
+  return result
 }
+
 const getNextSchedule = async (id: string): Promise<any> => {
-    const tour = await TourModel.findById(id)
-    const nextSchedule = tour?.getNextNearestStartDateAndEndDate();
-    return {
-        tour,
-        nextSchedule
-    }
+  const tour = await Tour.findById(id)
+  const nextSchedule = tour?.getNextNearestStartDateAndEndDate()
+
+  return {
+    tour,
+    nextSchedule,
+  }
 }
-
-
 
 export const tourServices = {
-    createTour,
-    getAllTour,
-    getSingleTour,
-    updateTour,
-    deleteTour,
-    getNextSchedule
+  createTour,
+  getAllTours,
+  getSingleTour,
+  updateTour,
+  deleteTour,
+  getNextSchedule,
 }

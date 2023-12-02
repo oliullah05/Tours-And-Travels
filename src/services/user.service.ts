@@ -1,44 +1,45 @@
-import { IUser } from "../interfaces/user.interface";
-import { UserModel } from "../models/user.model";
+import { IUser } from '../interfaces/user.interface'
+import User from '../models/user.model'
 
-const createUser = async(userData:IUser):Promise<IUser>=>{
-    const result =await UserModel.create(userData)
-    return result;
-}
-const getAllUser = async ():Promise<IUser[]>=>{
-    const result = await UserModel.find({
-        userStatus:"active"
-    });
-    return result
-}
-const getSingleUser =async(id:string):Promise<IUser|null>=>{
-const result = await UserModel.findById(id)
-return result
+const createUser = async (userData: IUser): Promise<IUser> => {
+  const result = await User.create(userData)
+  //   const result = new User(userData)
+  //   await result.save()
+
+  return result
 }
 
-
-const updateUser =async(id:string,userData:IUser):Promise<IUser|null>=>{
-    
-    const result = await UserModel.findByIdAndUpdate(id,userData,{
-        new:true,
-        runValidators:true
-    })
-    return result
+const getAllUsers = async (): Promise<IUser[]> => {
+  const result = await User.find()
+  return result
 }
 
-
-
-const deleteUser =async(id:string):Promise<IUser|null>=>{
-    const result = await UserModel.findByIdAndDelete(id)
-    return result
+const getSingleUser = async (id: string): Promise<IUser | null> => {
+  const result = await User.findById(id)
+  return result
 }
 
+const updateUser = async (
+  id: string,
+  userData: IUser,
+): Promise<IUser | null> => {
+  const result = await User.findByIdAndUpdate(id, userData, {
+    new: true,
+    runValidators: true,
+  })
 
+  return result
+}
 
-export const userServices ={
-    createUser,
-    getAllUser,
-    getSingleUser,
-    updateUser,
-    deleteUser
+const deleteUser = async (id: string): Promise<IUser | null> => {
+  const result = await User.findByIdAndDelete(id)
+  return result
+}
+
+export const userServices = {
+  createUser,
+  getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 }

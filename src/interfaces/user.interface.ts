@@ -1,9 +1,10 @@
 interface IUser {
-    name: string;
-    email: string;
-    age: number;
-    photo: string;
-    role: "user"|"admin"; 
-    userStatus: 'active' | 'inactive' | 'pending'; 
-  }
-  export {IUser};
+  name: string
+  age: number
+  email: string
+  photo: string
+  role: 'user' | 'admin'
+  userStatus: 'active' | 'inactive'
+}
+
+export { IUser }

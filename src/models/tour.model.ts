@@ -1,51 +1,67 @@
-import { Schema, model } from "mongoose";
-import { ITour, ITourMethods, ITourModel } from "../interfaces/tour.interface";
-import slugify from "slugify"
+import { Schema, model } from 'mongoose'
+import { ITour, ITourMethods, TTourModel } from '../interfaces/tour.interface'
+import slugify from 'slugify'
+//sSchema er upore Model nam er ekta type kaaj
+//but amra TTOurModel diye amader Model type janaisi je amader ITourMethods kichu methods o ache
+const tourSchema = new Schema<ITour, TTourModel, ITourMethods>(
+  {
+    name: {
+      type: String,
+      required: [true, 'Please tell us your name'],
+    },
+    durationHours: {
+      type: Number,
+      required: [true, 'Please tell us your durationHours'],
+    },
+    ratingAverage: {
+      type: Number,
+      default: 4.5,
+    },
+    ratingQuantity: {
+      type: Number,
+      default: 0,
+    },
+    price: {
+      type: Number,
+      required: [true, 'Please tell us your price'],
+    },
+    imageCover: {
+      type: String,
+      required: [true, 'Please tell us your imageCover'],
+    },
+    images: [String],
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+    },
+    startDates: [Date],
+    startLocation: {
+      type: String,
+      required: [true, 'Please tell us your startLocation'],
+    },
+    locations: [String],
+    slug: String,
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
+)
 
-const tourSchema = new Schema<ITour, ITourModel, ITourMethods>({
-  name: { type: String, required: [true, 'Name is required.'], trim: true },
-  durationHours: { type: Number, required: [true, 'Duration is required.'] },
-  ratingAverage: { type: Number, required: [true, 'Rating average is required.'] },
-  ratingQuantity: { type: Number, required: [true, 'Rating quantity is required.'] },
-  price: { type: Number, required: [true, 'Price is required.'] },
-  imageCover: { type: String, required: [true, 'Image cover is required.'] },
-  images: { type: [String], required: [true, 'Images are required.'] },
-  createdAt: { type: Date, required: [true, 'Creation date is required.'] },
-  startDates: { type: [Date], required: [true, 'Start dates are required.'] },
-  startLocation: { type: String, required: [true, 'Start location is required.'] },
-  locations: { type: [String], required: [true, 'Locations are required.'] },
-  slug: { type: String },
-}, {
-
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
-
-
-});
-
-
-tourSchema.virtual("durationDays").get(function () {
+tourSchema.virtual('durationDays').get(function () {
   return this.durationHours / 24
 })
 
-
-tourSchema.virtual("reviews", {
-  ref: "Review",
-  foreignField: "tourId",
-  localField: "_id"
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
 })
 
-
-
-tourSchema.pre("save", function (next) {
-  this.slug = slugify(this.name, {
-    trim: true,
-    lower: true
-  })
+tourSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true })
   next()
 })
-
-
 
 tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
   nearestStartDate: Date | null
@@ -70,6 +86,8 @@ tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
   }
 }
 
+const Tour = model<ITour, TTourModel>('Tour', tourSchema)
 
+export default Tour
 
-export const TourModel = model<ITour, ITourModel>('Tour', tourSchema);
+//Fat Model Thin Controller

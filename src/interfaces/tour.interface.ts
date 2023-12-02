@@ -1,4 +1,5 @@
-import { Model } from "mongoose";
+/* eslint-disable @typescript-eslint/ban-types */
+import { Model } from 'mongoose'
 
 interface ITour {
   name: string
@@ -15,15 +16,13 @@ interface ITour {
   slug: string
 }
 
-  interface ITourMethods {
-    getNextNearestStartDateAndEndDate(): {
-      nearestStartDate: Date | null
-      estimatedEndDate: Date | null
-    }
+interface ITourMethods {
+  getNextNearestStartDateAndEndDate(): {
+    nearestStartDate: Date | null
+    estimatedEndDate: Date | null
   }
+}
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  type ITourModel = Model<ITour, {}, ITourMethods>;
+type TTourModel = Model<ITour, {}, ITourMethods>
 
-
-  export {ITour,ITourModel,ITourMethods}
+export { ITour, ITourMethods, TTourModel }
