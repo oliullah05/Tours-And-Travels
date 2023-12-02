@@ -3,6 +3,7 @@ import { userRoutes } from './routes/user.route'
 import cors from 'cors'
 import { tourRoutes } from './routes/tour.route'
 import { reviewRoutes } from './routes/review.route'
+import notFound from './controllers/notFound.controllers'
 
 const app: Application = express()
 
@@ -22,20 +23,29 @@ app.get('/', (req: Request, res: Response) => {
 
 
 //catch all routes               // to catch not found route
-app.all("*",(req: Request, res: Response) => {
-  res.status(404).json({
-    status: 'fail',
-    message: `Route Not Found for ${req.originalUrl}`,
-  })
-})
+
+
+// way-1
+
+// app.all("*",(req: Request, res: Response) => {
+//   res.status(404).json({
+//     status: 'fail',
+//     message: `Route Not Found for ${req.originalUrl}`,
+//   })
+// })
+
+
+// way-2
+// app.all("*",notFound)
 
 
 
+// not found route using middlewar
+// app.use("*",notFound)
 
 
-
-
-
+// not found route using middlewar-2
+app.use(notFound)
 
 
 export default app
