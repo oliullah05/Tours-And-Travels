@@ -59,9 +59,17 @@ const match = inputString.match(regex);
 }
 
 
+//capture mongooseError - Cast Error
 
-
-console.log(statusCode);
+if (err instanceof mongoose.Error.CastError) {
+  statusCode = 400;
+  status = "error";
+  message = "Invalid Id";
+  issues.push({
+    path:err.path,
+    message:err.message
+  })
+}
 
 
 
