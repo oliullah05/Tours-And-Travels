@@ -20,8 +20,8 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
 
   if (err instanceof mongoose.Error.ValidationError) {
     statusCode = 400;
-    message = "Validation Error";
     status = "error";
+    message = "Validation Error";
     const errorValues = Object.values(err.errors);
     errorValues.forEach((errObject: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
       issues.push({
@@ -33,6 +33,35 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
   }
 
 
+//capture mongooseError - Duplicate Error
+
+
+if(err.code && err.code===11000){
+  statusCode = 409;
+
+  
+  const inputString = err.message;
+
+const regex = /{ name: "(.*?)"/;
+const match = inputString.match(regex);
+
+
+  const extractedValue = match[1];
+  
+  console.log(extractedValue); // This will print "oliullah"
+
+  message =`VALUE is alrady exits`;
+  status = "error";
+  issues.push({
+    path:"",
+    message:`${extractedValue} is duplicate`
+  })
+}
+
+
+
+
+console.log(statusCode);
 
 
 
@@ -44,6 +73,6 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
     status,
     message,
     issues: issues,
-    // Myerror: err
+    Myerror: err
   })
 }
