@@ -8,6 +8,7 @@ const tourSchema = new Schema<ITour, TTourModel, ITourMethods>(
     name: {
       type: String,
       required: [true, 'Please tell us your name'],
+      unique:true
     },
     durationHours: {
       type: Number,
@@ -56,11 +57,25 @@ tourSchema.virtual('durationDays').get(function () {
   return this.durationHours / 24
 })
 
-tourSchema.virtual('reviews', {
-  ref: 'Review',
-  foreignField: 'tour',
-  localField: '_id',
+// tourSchema.virtual('reviews', {
+//   ref: 'Review',
+//   foreignField: 'tour',
+//   localField: '_id',
+// })
+
+
+tourSchema.virtual("reviews",{
+  ref:"Review",
+  foreignField:"tour",
+  localField:"_id"
 })
+
+
+
+
+
+
+
 
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true })
